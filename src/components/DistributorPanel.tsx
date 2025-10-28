@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
@@ -176,10 +176,10 @@ export const DistributorPanel = ({ user, onLogout }) => {
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search shipments..."
           className="tap-target rounded-lg pl-10"
-          style={{
+          style={useMemo(() => ({
             backgroundColor: '#FFFFFF',
             borderColor: '#E0E0E0'
-          }}
+          }), [])}
         />
       </div>
     </div>

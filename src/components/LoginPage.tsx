@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -96,16 +96,20 @@ export const LoginPage = ({ onLogin, onSwitchToRegister }) => {
     }, 1000);
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = useCallback((field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear field-specific error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-    if (errors.general) {
-      setErrors(prev => ({ ...prev, general: '' }));
-    }
-  };
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      if (newErrors[field]) {
+        delete newErrors[field];
+      }
+      if (newErrors.general) {
+        delete newErrors.general;
+      }
+      return newErrors;
+    });
+  }, []);
 
   const isFormValid = () => {
     return formData.email && formData.password && !errors.email && !errors.password;
@@ -160,11 +164,11 @@ export const LoginPage = ({ onLogin, onSwitchToRegister }) => {
                 placeholder="Enter your email"
                 required
                 className="tap-target w-full rounded-lg border px-4"
-                style={{
+                style={useMemo(() => ({
                   backgroundColor: '#FFFFFF',
                   borderColor: errors.email ? '#E65100' : '#E0E0E0',
                   minHeight: '48px'
-                }}
+                }), [errors.email])}
               />
               {errors.email && (
                 <div className="flex items-start gap-2 mt-2">
@@ -185,11 +189,11 @@ export const LoginPage = ({ onLogin, onSwitchToRegister }) => {
                   placeholder="Enter your password"
                   required
                   className="tap-target w-full rounded-lg border px-4 pr-12"
-                  style={{
+                  style={useMemo(() => ({
                     backgroundColor: '#FFFFFF',
                     borderColor: errors.password ? '#E65100' : '#E0E0E0',
                     minHeight: '48px'
-                  }}
+                  }), [errors.password])}
                 />
                 <button
                   type="button"

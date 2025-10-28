@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -123,13 +123,18 @@ export const FarmerDashboard = ({ user, onLogout }) => {
     setShowAddBatch(false);
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = useCallback((field, value) => {
     setNewBatch(prev => ({ ...prev, [field]: value }));
     // Clear field error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
+    setErrors(prev => {
+      if (prev[field]) {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      }
+      return prev;
+    });
+  }, []);
 
   const isFormValid = () => {
     return newBatch.cropType && newBatch.quantity && newBatch.harvestDate && 
@@ -313,9 +318,9 @@ export const FarmerDashboard = ({ user, onLogout }) => {
               <Select value={newBatch.cropType} onValueChange={(value) => handleInputChange('cropType', value)}>
                 <SelectTrigger 
                   className="tap-target rounded-lg"
-                  style={{
+                  style={useMemo(() => ({
                     borderColor: errors.cropType ? '#E65100' : '#E0E0E0'
-                  }}
+                  }), [errors.cropType])}
                 >
                   <SelectValue placeholder="Select crop" />
                 </SelectTrigger>
@@ -340,14 +345,15 @@ export const FarmerDashboard = ({ user, onLogout }) => {
               <div>
                 <Label className="block mb-2">Quantity *</Label>
                 <Input
+                  key="batch-quantity"
                   type="number"
                   value={newBatch.quantity}
                   onChange={(e) => handleInputChange('quantity', e.target.value)}
                   placeholder="100"
                   className="tap-target rounded-lg"
-                  style={{
+                  style={useMemo(() => ({
                     borderColor: errors.quantity ? '#E65100' : '#E0E0E0'
-                  }}
+                  }), [errors.quantity])}
                 />
                 {errors.quantity && (
                   <div className="flex items-start gap-2 mt-2">
@@ -374,13 +380,14 @@ export const FarmerDashboard = ({ user, onLogout }) => {
             <div>
               <Label className="block mb-2">Harvest Date *</Label>
               <Input
+                key="batch-harvest-date"
                 type="date"
                 value={newBatch.harvestDate}
                 onChange={(e) => handleInputChange('harvestDate', e.target.value)}
                 className="tap-target rounded-lg"
-                style={{
+                style={useMemo(() => ({
                   borderColor: errors.harvestDate ? '#E65100' : '#E0E0E0'
-                }}
+                }), [errors.harvestDate])}
               />
               {errors.harvestDate && (
                 <div className="flex items-start gap-2 mt-2">
@@ -393,14 +400,15 @@ export const FarmerDashboard = ({ user, onLogout }) => {
             <div>
               <Label className="block mb-2">Expected Price (₹ per {newBatch.unit})</Label>
               <Input
+                key="batch-expected-price"
                 type="number"
                 value={newBatch.expectedPrice}
                 onChange={(e) => handleInputChange('expectedPrice', e.target.value)}
                 placeholder="2500"
                 className="tap-target rounded-lg"
-                style={{
+                style={useMemo(() => ({
                   borderColor: errors.expectedPrice ? '#E65100' : '#E0E0E0'
-                }}
+                }), [errors.expectedPrice])}
               />
               {errors.expectedPrice && (
                 <div className="flex items-start gap-2 mt-2">
@@ -413,6 +421,7 @@ export const FarmerDashboard = ({ user, onLogout }) => {
             <div>
               <Label className="block mb-2">Additional Notes</Label>
               <Textarea
+                key="batch-description"
                 value={newBatch.description}
                 onChange={(e) => handleInputChange('description', e.target.value)}
                 placeholder="Any additional information about this batch..."

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -146,16 +146,20 @@ export const RegisterPage = ({ onRegister, onSwitchToLogin }) => {
     }, 1500);
   };
 
-  const handleInputChange = (field, value) => {
+  const handleInputChange = useCallback((field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear field-specific error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-    if (errors.general) {
-      setErrors(prev => ({ ...prev, general: '' }));
-    }
-  };
+    setErrors(prev => {
+      const newErrors = { ...prev };
+      if (newErrors[field]) {
+        delete newErrors[field];
+      }
+      if (newErrors.general) {
+        delete newErrors.general;
+      }
+      return newErrors;
+    });
+  }, []);
 
   const isStepValid = () => {
     switch (step) {
@@ -185,11 +189,11 @@ export const RegisterPage = ({ onRegister, onSwitchToLogin }) => {
           onChange={(e) => handleInputChange('email', e.target.value)}
           placeholder="Enter your email"
           className="tap-target w-full rounded-lg border px-4"
-          style={{
+          style={useMemo(() => ({
             backgroundColor: '#FFFFFF',
             borderColor: errors.email ? '#E65100' : '#E0E0E0',
             minHeight: '48px'
-          }}
+          }), [errors.email])}
         />
         {errors.email && (
           <div className="flex items-start gap-2 mt-2">
@@ -209,11 +213,11 @@ export const RegisterPage = ({ onRegister, onSwitchToLogin }) => {
             onChange={(e) => handleInputChange('password', e.target.value)}
             placeholder="Min 8 characters with letters & numbers"
             className="tap-target w-full rounded-lg border px-4 pr-12"
-            style={{
+            style={useMemo(() => ({
               backgroundColor: '#FFFFFF',
               borderColor: errors.password ? '#E65100' : '#E0E0E0',
               minHeight: '48px'
-            }}
+            }), [errors.password])}
           />
           <button
             type="button"
@@ -242,11 +246,11 @@ export const RegisterPage = ({ onRegister, onSwitchToLogin }) => {
             onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
             placeholder="Confirm password"
             className="tap-target w-full rounded-lg border px-4 pr-12"
-            style={{
+            style={useMemo(() => ({
               backgroundColor: '#FFFFFF',
               borderColor: errors.confirmPassword ? '#E65100' : '#E0E0E0',
               minHeight: '48px'
-            }}
+            }), [errors.confirmPassword])}
           />
           <button
             type="button"
@@ -338,11 +342,11 @@ export const RegisterPage = ({ onRegister, onSwitchToLogin }) => {
           onChange={(e) => handleInputChange('name', e.target.value)}
           placeholder="Enter your full name"
           className="tap-target w-full rounded-lg border px-4"
-          style={{
+          style={useMemo(() => ({
             backgroundColor: '#FFFFFF',
             borderColor: errors.name ? '#E65100' : '#E0E0E0',
             minHeight: '48px'
-          }}
+          }), [errors.name])}
         />
         {errors.name && (
           <div className="flex items-start gap-2 mt-2">
@@ -369,11 +373,11 @@ export const RegisterPage = ({ onRegister, onSwitchToLogin }) => {
             'Organization name'
           }
           className="tap-target w-full rounded-lg border px-4"
-          style={{
+          style={useMemo(() => ({
             backgroundColor: '#FFFFFF',
             borderColor: '#E0E0E0',
             minHeight: '48px'
-          }}
+          }), [])}
         />
       </div>
 
@@ -385,11 +389,11 @@ export const RegisterPage = ({ onRegister, onSwitchToLogin }) => {
           onChange={(e) => handleInputChange('location', e.target.value)}
           placeholder="City, State"
           className="tap-target w-full rounded-lg border px-4"
-          style={{
+          style={useMemo(() => ({
             backgroundColor: '#FFFFFF',
             borderColor: errors.location ? '#E65100' : '#E0E0E0',
             minHeight: '48px'
-          }}
+          }), [errors.location])}
         />
         {errors.location && (
           <div className="flex items-start gap-2 mt-2">
@@ -408,11 +412,11 @@ export const RegisterPage = ({ onRegister, onSwitchToLogin }) => {
           onChange={(e) => handleInputChange('phone', e.target.value)}
           placeholder="+91 98765 43210"
           className="tap-target w-full rounded-lg border px-4"
-          style={{
+          style={useMemo(() => ({
             backgroundColor: '#FFFFFF',
             borderColor: errors.phone ? '#E65100' : '#E0E0E0',
             minHeight: '48px'
-          }}
+          }), [errors.phone])}
         />
         {errors.phone && (
           <div className="flex items-start gap-2 mt-2">
