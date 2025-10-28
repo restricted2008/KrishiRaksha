@@ -1,7 +1,7 @@
 
   # KrishiRaksha
 
-  This is a code bundle for KrishiRaksha. The original project is available at https://www.figma.com/design/YnHE3DpPypU9aTsLrbpnAC/KrishiRaksha.
+  This is a Frontend Only code bundle for KrishiRaksha. 
 
   ## Running the code
 
