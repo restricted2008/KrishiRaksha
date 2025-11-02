@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline Testing - Krishiraksha</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: #2E7D32;
+      margin-bottom: 10px;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .status.online {
+      background: #E8F5E8;
+      color: #2E7D32;
+    }
+
+    .status.offline {
+      background: #FFF3E0;
+      color: #F9A825;
+    }
+
+    .test-section {
+      margin: 30px 0;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+    }
+
+    .test-section h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #212121;
+    }
+
+    button {
+      background: #2E7D32;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+
+    button:hover {
+      background: #1B5E20;
+    }
+
+    button.secondary {
+      background: #616161;
+    }
+
+    button.secondary:hover {
+      background: #424242;
+    }
+
+    button:disabled {
+      background: #9E9E9E;
+      cursor: not-allowed;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 12px;
+      background: #f5f5f5;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .result.success {
+      background: #E8F5E8;
+      color: #2E7D32;
+    }
+
+    .result.error {
+      background: #FFEBEE;
+      color: #C62828;
+    }
+
+    .cache-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .cache-list li {
+      padding: 8px;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 14px;
+    }
+
+    .cache-list li:last-child {
+      border-bottom: none;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    .info {
+      background: #E3F2FD;
+      padding: 12px;
+      border-radius: 4px;
+      margin: 15px 0;
+      font-size: 14px;
+      color: #1976D2;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧪 Offline Testing Tool</h1>
+    <p style="color: #616161; margin-bottom: 20px;">Test service worker caching and offline functionality</p>
+    
+    <div class="status" id="online-status">
+      Checking connection...
+    </div>
+
+    <!-- Service Worker Registration -->
+    <div class="test-section">
+      <h2>1. Service Worker Registration</h2>
+      <button onclick="registerSW()">Register Service Worker</button>
+      <button onclick="unregisterSW()" class="secondary">Unregister SW</button>
+      <button onclick="checkSWStatus()">Check Status</button>
+      <div id="sw-result" class="result" style="display:none;"></div>
+    </div>
+
+    <!-- Cache Testing -->
+    <div class="test-section">
+      <h2>2. Cache Management</h2>
+      <button onclick="listCaches()">List All Caches</button>
+      <button onclick="clearCaches()" class="secondary">Clear All Caches</button>
+      <button onclick="getCacheSize()">Get Cache Size</button>
+      <div id="cache-result" class="result" style="display:none;"></div>
+    </div>
+
+    <!-- Network Simulation -->
+    <div class="test-section">
+      <h2>3. Network Simulation</h2>
+      <div class="info">
+        <strong>Note:</strong> To truly test offline mode, use Chrome DevTools:
+        <ol style="margin-top: 8px; margin-left: 20px;">
+          <li>Open DevTools (F12)</li>
+          <li>Go to Network tab</li>
+          <li>Select "Offline" from throttling dropdown</li>
+        </ol>
+      </div>
+      <button onclick="testNetworkFirst()">Test Network-First Strategy</button>
+      <button onclick="testCacheFirst()">Test Cache-First Strategy</button>
+      <div id="network-result" class="result" style="display:none;"></div>
+    </div>
+
+    <!-- Background Sync -->
+    <div class="test-section">
+      <h2>4. Background Sync</h2>
+      <button onclick="queueFormData()">Queue Test Form Data</button>
+      <button onclick="checkSyncQueue()">Check Sync Queue</button>
+      <button onclick="triggerSync()">Trigger Background Sync</button>
+      <div id="sync-result" class="result" style="display:none;"></div>
+    </div>
+
+    <!-- IndexedDB -->
+    <div class="test-section">
+      <h2>5. IndexedDB (Offline Storage)</h2>
+      <button onclick="addPendingRequest()">Add Test Request</button>
+      <button onclick="listPendingRequests()">List Pending Requests</button>
+      <button onclick="clearPendingRequests()" class="secondary">Clear All</button>
+      <div id="idb-result" class="result" style="display:none;"></div>
+    </div>
+
+    <!-- Cache Hit Testing -->
+    <div class="test-section">
+      <h2>6. Cache Hit Testing</h2>
+      <button onclick="testCacheHit('/')">Test Homepage Cache</button>
+      <button onclick="testCacheHit('/api/test')">Test API Cache</button>
+      <button onclick="testCacheHit('/offline.html')">Test Offline Page</button>
+      <div id="cache-hit-result" class="result" style="display:none;"></div>
+    </div>
+  </div>
+
+  <script>
+    // Update online status
+    function updateOnlineStatus() {
+      const status = document.getElementById('online-status');
+      status.className = 'status ' + (navigator.onLine ? 'online' : 'offline');
+      status.textContent = navigator.onLine ? '🟢 Online' : '🔴 Offline';
+    }
+
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
+
+    // Service Worker Registration
+    async function registerSW() {
+      const result = document.getElementById('sw-result');
+      result.style.display = 'block';
+      result.className = 'result';
+      result.textContent = 'Registering service worker...';
+
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js');
+        result.className = 'result success';
+        result.textContent = `✓ Service Worker registered!\nScope: ${registration.scope}\nState: ${registration.active?.state || 'installing'}`;
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Registration failed: ${error.message}`;
+      }
+    }
+
+    async function unregisterSW() {
+      const result = document.getElementById('sw-result');
+      result.style.display = 'block';
+
+      try {
+        const registration = await navigator.serviceWorker.getRegistration();
+        if (registration) {
+          await registration.unregister();
+          result.className = 'result success';
+          result.textContent = '✓ Service Worker unregistered';
+        } else {
+          result.className = 'result';
+          result.textContent = 'No service worker registered';
+        }
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    async function checkSWStatus() {
+      const result = document.getElementById('sw-result');
+      result.style.display = 'block';
+
+      try {
+        const registration = await navigator.serviceWorker.getRegistration();
+        if (registration) {
+          result.className = 'result success';
+          result.textContent = `✓ Service Worker active\nScope: ${registration.scope}\nInstalling: ${!!registration.installing}\nWaiting: ${!!registration.waiting}\nActive: ${!!registration.active}`;
+        } else {
+          result.className = 'result';
+          result.textContent = 'No service worker registered';
+        }
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    // Cache Management
+    async function listCaches() {
+      const result = document.getElementById('cache-result');
+      result.style.display = 'block';
+
+      try {
+        const cacheNames = await caches.keys();
+        result.className = 'result success';
+        result.textContent = `Found ${cacheNames.length} cache(s):\n\n` + cacheNames.map((name, i) => `${i + 1}. ${name}`).join('\n');
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    async function clearCaches() {
+      const result = document.getElementById('cache-result');
+      result.style.display = 'block';
+      result.className = 'result';
+      result.textContent = 'Clearing caches...';
+
+      try {
+        const cacheNames = await caches.keys();
+        await Promise.all(cacheNames.map(name => caches.delete(name)));
+        result.className = 'result success';
+        result.textContent = `✓ Cleared ${cacheNames.length} cache(s)`;
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    async function getCacheSize() {
+      const result = document.getElementById('cache-result');
+      result.style.display = 'block';
+
+      try {
+        const cacheNames = await caches.keys();
+        let totalEntries = 0;
+        const cacheInfo = [];
+
+        for (const name of cacheNames) {
+          const cache = await caches.open(name);
+          const requests = await cache.keys();
+          totalEntries += requests.length;
+          cacheInfo.push(`${name}: ${requests.length} entries`);
+        }
+
+        result.className = 'result success';
+        result.textContent = `Total: ${totalEntries} cached entries\n\n` + cacheInfo.join('\n');
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    // Network Testing
+    async function testNetworkFirst() {
+      const result = document.getElementById('network-result');
+      result.style.display = 'block';
+      result.textContent = 'Testing Network-First strategy...';
+
+      const start = Date.now();
+      try {
+        const response = await fetch('/');
+        const duration = Date.now() - start;
+        result.className = 'result success';
+        result.textContent = `✓ Fetched in ${duration}ms\nStatus: ${response.status}\nFrom: ${response.url}\nCached: ${response.type === 'cached'}`;
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Network failed: ${error.message}\nThis is expected when offline.`;
+      }
+    }
+
+    async function testCacheFirst() {
+      const result = document.getElementById('network-result');
+      result.style.display = 'block';
+
+      const start = Date.now();
+      const cached = await caches.match('/');
+      const duration = Date.now() - start;
+
+      if (cached) {
+        result.className = 'result success';
+        result.textContent = `✓ Cache hit! (${duration}ms)\nStatus: ${cached.status}\nType: ${cached.type}`;
+      } else {
+        result.className = 'result';
+        result.textContent = 'No cache entry found. Visit the homepage first.';
+      }
+    }
+
+    // Background Sync
+    async function queueFormData() {
+      const result = document.getElementById('sync-result');
+      result.style.display = 'block';
+
+      try {
+        const db = await openDB();
+        const tx = db.transaction('pending-requests', 'readwrite');
+        const store = tx.objectStore('pending-requests');
+        
+        await store.add({
+          url: '/api/test',
+          method: 'POST',
+          body: JSON.stringify({ test: 'data', timestamp: Date.now() }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        result.className = 'result success';
+        result.textContent = '✓ Test form data queued for sync';
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    async function checkSyncQueue() {
+      const result = document.getElementById('sync-result');
+      result.style.display = 'block';
+
+      try {
+        const db = await openDB();
+        const tx = db.transaction('pending-requests', 'readonly');
+        const store = tx.objectStore('pending-requests');
+        const requests = await store.getAll();
+
+        result.className = 'result success';
+        result.textContent = `Queue: ${requests.length} pending request(s)\n\n` + 
+          requests.map((r, i) => `${i + 1}. ${r.method} ${r.url}`).join('\n');
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    async function triggerSync() {
+      const result = document.getElementById('sync-result');
+      result.style.display = 'block';
+
+      try {
+        const registration = await navigator.serviceWorker.ready;
+        await registration.sync.register('sync-form-data');
+        result.className = 'result success';
+        result.textContent = '✓ Background sync triggered';
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    // IndexedDB
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open('krishiraksha-offline', 1);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+        request.onupgradeneeded = (event) => {
+          const db = event.target.result;
+          if (!db.objectStoreNames.contains('pending-requests')) {
+            db.createObjectStore('pending-requests', { keyPath: 'id', autoIncrement: true });
+          }
+        };
+      });
+    }
+
+    async function addPendingRequest() {
+      const result = document.getElementById('idb-result');
+      result.style.display = 'block';
+
+      try {
+        const db = await openDB();
+        const tx = db.transaction('pending-requests', 'readwrite');
+        const store = tx.objectStore('pending-requests');
+        
+        const id = await store.add({
+          url: '/api/test/' + Date.now(),
+          method: 'POST',
+          body: JSON.stringify({ data: 'test' }),
+          timestamp: Date.now()
+        });
+
+        result.className = 'result success';
+        result.textContent = `✓ Added request with ID: ${id}`;
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    async function listPendingRequests() {
+      const result = document.getElementById('idb-result');
+      result.style.display = 'block';
+
+      try {
+        const db = await openDB();
+        const tx = db.transaction('pending-requests', 'readonly');
+        const store = tx.objectStore('pending-requests');
+        const requests = await store.getAll();
+
+        result.className = 'result success';
+        result.textContent = `Found ${requests.length} pending request(s):\n\n` +
+          requests.map(r => `ID ${r.id}: ${r.method} ${r.url}`).join('\n');
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    async function clearPendingRequests() {
+      const result = document.getElementById('idb-result');
+      result.style.display = 'block';
+
+      try {
+        const db = await openDB();
+        const tx = db.transaction('pending-requests', 'readwrite');
+        const store = tx.objectStore('pending-requests');
+        await store.clear();
+
+        result.className = 'result success';
+        result.textContent = '✓ All pending requests cleared';
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+
+    // Cache Hit Testing
+    async function testCacheHit(url) {
+      const result = document.getElementById('cache-hit-result');
+      result.style.display = 'block';
+
+      const start = Date.now();
+      try {
+        const cached = await caches.match(url);
+        const duration = Date.now() - start;
+
+        if (cached) {
+          result.className = 'result success';
+          result.textContent = `✓ CACHE HIT for ${url}\nResponse time: ${duration}ms\nStatus: ${cached.status}\nType: ${cached.type}`;
+        } else {
+          result.className = 'result';
+          result.textContent = `CACHE MISS for ${url}\nThe URL is not cached. Visit it first or wait for SW to cache it.`;
+        }
+      } catch (error) {
+        result.className = 'result error';
+        result.textContent = `✗ Error: ${error.message}`;
+      }
+    }
+  </script>
+</body>
+</html>

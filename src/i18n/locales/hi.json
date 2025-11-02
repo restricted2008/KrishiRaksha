@@ -1,0 +1,78 @@
+{
+  "common": {
+    "login": "लॉगिन",
+    "logout": "लॉगआउट",
+    "register": "पंजीकरण",
+    "submit": "जमा करें",
+    "cancel": "रद्द करें",
+    "save": "सहेजें",
+    "delete": "हटाएं",
+    "edit": "संपादित करें",
+    "back": "वापस",
+    "next": "आगे",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता",
+    "search": "खोजें",
+    "filter": "फ़िल्टर"
+  },
+  "auth": {
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "confirmPassword": "पासवर्ड की पुष्टि करें",
+    "phone": "फ़ोन नंबर",
+    "name": "नाम",
+    "role": "भूमिका",
+    "loginTitle": "कृषि रक्षा में लॉगिन करें",
+    "registerTitle": "कृषि रक्षा के लिए पंजीकरण करें",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "noAccount": "कोई खाता नहीं है?",
+    "hasAccount": "पहले से खाता है?",
+    "signUp": "साइन अप करें",
+    "signIn": "साइन इन करें"
+  },
+  "roles": {
+    "farmer": "किसान",
+    "distributor": "वितरक",
+    "retailer": "खुदरा विक्रेता",
+    "consumer": "उपभोक्ता",
+    "government": "सरकार"
+  },
+  "farmer": {
+    "dashboard": "किसान डैशबोर्ड",
+    "addProduct": "उत्पाद जोड़ें",
+    "myProducts": "मेरे उत्पाद",
+    "productName": "उत्पाद का नाम",
+    "batchNumber": "बैच संख्या",
+    "quantity": "मात्रा",
+    "harvestDate": "कटाई की तारीख",
+    "price": "मूल्य"
+  },
+  "supplyChain": {
+    "update": "आपूर्ति श्रृंखला अपडेट करें",
+    "history": "आपूर्ति श्रृंखला इतिहास",
+    "status": "स्थिति",
+    "location": "स्थान",
+    "timestamp": "समय"
+  },
+  "consumer": {
+    "verify": "उत्पाद सत्यापित करें",
+    "scanQR": "QR कोड स्कैन करें",
+    "productDetails": "उत्पाद विवरण",
+    "authenticity": "प्रामाणिकता सत्यापित"
+  },
+  "government": {
+    "dashboard": "सरकारी डैशबोर्ड",
+    "analytics": "विश्लेषण",
+    "allProducts": "सभी उत्पाद",
+    "reports": "रिपोर्ट"
+  },
+  "errors": {
+    "required": "यह फ़ील्ड आवश्यक है",
+    "invalidEmail": "अमान्य ईमेल पता",
+    "invalidPhone": "अमान्य फ़ोन नंबर",
+    "passwordMismatch": "पासवर्ड मेल नहीं खाते",
+    "networkError": "नेटवर्क त्रुटि। कृपया पुनः प्रयास करें।",
+    "unknownError": "एक त्रुटि हुई। कृपया पुनः प्रयास करें।"
+  }
+}

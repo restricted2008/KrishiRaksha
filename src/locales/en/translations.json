@@ -1,0 +1,177 @@
+{
+  "common": {
+    "appName": "Krishiraksha",
+    "tagline": "Farm to Fork Transparency",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "submit": "Submit",
+    "close": "Close",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "login": {
+    "title": "Welcome Back",
+    "subtitle": "Sign in to continue",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "signIn": "Sign In",
+    "signingIn": "Signing in...",
+    "successMessage": "Login successful! Redirecting...",
+    "errorMessage": "Invalid email or password. Try demo accounts below.",
+    "demoAccess": "Quick Demo Access:",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "footer": "🌾 Secure • Transparent • Farmer-Friendly",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
+  },
+  "register": {
+    "title": "Create Account",
+    "subtitle": "Join Krishiraksha",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your full name",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email",
+    "password": "Password",
+    "passwordPlaceholder": "Create a password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "role": "User Type",
+    "selectRole": "Select your role",
+    "register": "Register",
+    "registering": "Creating account...",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginHere": "Login here"
+  },
+  "dashboard": {
+    "farmer": {
+      "title": "Farmer Dashboard",
+      "totalBatches": "Total Batches",
+      "expectedValue": "Expected Value",
+      "recentBatches": "Recent Batches",
+      "noBatchesYet": "No Batches Yet",
+      "noBatchesMessage": "Create your first crop batch to get started",
+      "addFirstBatch": "Add First Batch",
+      "organic": "Organic"
+    },
+    "government": {
+      "title": "Government Portal",
+      "subtitle": "Agricultural Monitoring",
+      "systemOverview": "System Overview",
+      "recentAlerts": "Recent Alerts",
+      "regionalBreakdown": "Regional Breakdown",
+      "topCrops": "Top Crops by Volume",
+      "noActiveAlerts": "No Active Alerts",
+      "allSystemsNormal": "All systems are operating normally",
+      "overview": "Overview",
+      "alerts": "Alerts"
+    }
+  },
+  "batch": {
+    "addNew": "Add New Batch",
+    "addNewBatch": "Add new batch",
+    "cropType": "Crop Type",
+    "cropTypePlaceholder": "Select crop",
+    "variety": "Variety",
+    "varietyPlaceholder": "e.g., Hybrid, Organic",
+    "quantity": "Quantity",
+    "quantityPlaceholder": "100",
+    "unit": "Unit",
+    "harvestDate": "Harvest Date",
+    "expectedPrice": "Expected Price",
+    "expectedPricePlaceholder": "2500",
+    "expectedPriceLabel": "Expected Price (₹ per {{unit}})",
+    "description": "Additional Notes",
+    "descriptionPlaceholder": "Any additional information about this batch...",
+    "organicCertified": "Organic Certified",
+    "createBatch": "Create Batch",
+    "required": "Required fields are marked with *",
+    "crops": {
+      "rice": "Rice (चावल)",
+      "wheat": "Wheat (गेहूं)",
+      "tomato": "Tomato (टमाटर)",
+      "potato": "Potato (आलू)",
+      "onion": "Onion (प्याज)",
+      "corn": "Corn (मक्का)"
+    },
+    "units": {
+      "kg": "Kilograms (kg)",
+      "quintal": "Quintal",
+      "ton": "Ton",
+      "pieces": "Pieces"
+    }
+  },
+  "qrCode": {
+    "title": "QR Code",
+    "batchId": "Batch ID: {{id}}",
+    "showQRCode": "Show QR code for {{crop}} batch"
+  },
+  "validation": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordRequired": "Password is required",
+    "passwordMin": "Password must be at least 8 characters",
+    "passwordStrength": "Password must contain uppercase, lowercase, and number",
+    "nameRequired": "Name is required",
+    "fieldRequired": "{{field}} is required",
+    "fieldMin": "{{field}} must be at least {{min}} characters",
+    "numberMin": "{{field}} must be at least {{min}}",
+    "dateInvalid": "Please select a valid date",
+    "dateFuture": "Date cannot be in the future",
+    "datePast": "Date must be in the future"
+  },
+  "roles": {
+    "farmer": "👨‍🌾 Farmer",
+    "distributor": "🚛 Distributor",
+    "retailer": "🏪 Retailer",
+    "consumer": "🛒 Consumer",
+    "government": "🏛️ Government"
+  },
+  "filters": {
+    "region": "Select Region",
+    "allRegions": "All Regions",
+    "timeframe": "Timeframe",
+    "last24Hours": "Last 24 Hours",
+    "last7Days": "Last 7 Days",
+    "last30Days": "Last 30 Days",
+    "last90Days": "Last 90 Days"
+  },
+  "regions": {
+    "punjab": "Punjab",
+    "haryana": "Haryana",
+    "up": "Uttar Pradesh",
+    "rajasthan": "Rajasthan",
+    "delhi": "Delhi"
+  },
+  "actions": {
+    "viewDetails": "View Details",
+    "markResolved": "Mark Resolved",
+    "logout": "Logout"
+  },
+  "voice": {
+    "startListening": "Start voice input",
+    "stopListening": "Stop listening",
+    "listening": "Listening...",
+    "notSupported": "Voice input not supported in this browser",
+    "error": "Voice input error",
+    "permissionDenied": "Microphone permission denied"
+  },
+  "language": {
+    "selectLanguage": "Select Language",
+    "changeLanguage": "Change language",
+    "currentLanguage": "Current: {{language}}",
+    "english": "English",
+    "hindi": "हिंदी (Hindi)"
+  }
+}

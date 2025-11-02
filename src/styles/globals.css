@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700;800&display=swap');
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Mobile-first design system */
+  --font-size: 16px;
+  
+  /* Color Palette */
+  --primary: #2E7D32;          /* Deep Green */
+  --secondary: #F9A825;        /* Warm Yellow */
+  --background: #FAFAFA;       /* Off-White */
+  --surface: #FFFFFF;          /* Pure White for cards */
+  --text-primary: #212121;     /* Charcoal */
+  --text-secondary: #9E9E9E;   /* Cool Grey */
+  --alert: #E65100;            /* Rust Orange */
+  --info: #039BE5;             /* Sky Blue */
+  --success: #2E7D32;          /* Same as primary */
+  
+  /* Component Colors */
+  --foreground: var(--text-primary);
+  --card: var(--surface);
+  --card-foreground: var(--text-primary);
+  --popover: var(--surface);
+  --popover-foreground: var(--text-primary);
+  --primary-foreground: #ffffff;
+  --secondary-foreground: var(--text-primary);
+  --muted: #F5F5F5;
+  --muted-foreground: var(--text-secondary);
+  --accent: var(--secondary);
+  --accent-foreground: var(--text-primary);
+  --destructive: var(--alert);
+  --destructive-foreground: #ffffff;
+  --border: #E0E0E0;
+  --input: transparent;
+  --input-background: var(--surface);
+  --ring: var(--primary);
+  
+  /* Typography Scale (px converted to rem) */
+  --text-h1: 1.75rem;          /* 28px */
+  --text-h2: 1.375rem;         /* 22px */
+  --text-h3: 1.125rem;         /* 18px */
+  --text-body: 1rem;           /* 16px */
+  --text-caption: 0.8125rem;   /* 13px */
+  
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  
+  /* Layout Constants */
+  --spacing-safe-x: 1rem;      /* 16dp sides */
+  --spacing-safe-y: 1.5rem;    /* 24dp top/bottom */
+  --tap-target: 3rem;          /* 48dp minimum */
+  --nav-height: 3.5rem;        /* 56dp */
+  --app-bar-height: 3.5rem;    /* 56dp */
+  --card-item-height: 4.5rem;  /* 72dp */
+  
+  /* Border Radius */
+  --radius: 0.75rem;           /* 12px */
+  --radius-sm: 0.5rem;         /* 8px */
+  --radius-lg: 1rem;           /* 16px */
+  
+  /* Charts */
+  --chart-1: var(--primary);
+  --chart-2: var(--secondary);
+  --chart-3: var(--info);
+  --chart-4: var(--alert);
+  --chart-5: #757575;
+}
+
+/* Mobile app doesn't need dark mode for agricultural use */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius-lg);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    font-size: var(--font-size);
+    /* Lock viewport for mobile app */
+    width: 360px;
+    max-width: 360px;
+    margin: 0 auto;
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    font-weight: var(--font-weight-regular);
+    /* Mobile app container */
+    width: 360px;
+    max-width: 360px;
+    min-height: 800px;
+    margin: 0 auto;
+    overflow-x: hidden;
+    position: relative;
+  }
+}
+
+/**
+ * Typography system for mobile agricultural app
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: var(--text-h1);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: var(--text-h2);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: var(--text-h3);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    h4, h5, h6 {
+      font-family: 'Poppins', sans-serif;
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    p {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.5;
+      color: var(--text-primary);
+    }
+
+    label {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.4;
+      color: var(--text-primary);
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.4;
+    }
+
+    input, textarea, select {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-body);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.4;
+    }
+
+    .caption {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--text-caption);
+      font-weight: var(--font-weight-regular);
+      line-height: 1.4;
+      color: var(--text-secondary);
+    }
+  }
+}
+
+/* Mobile app utility classes */
+@layer utilities {
+  .mobile-container {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .safe-area {
+    padding-left: var(--spacing-safe-x);
+    padding-right: var(--spacing-safe-x);
+  }
+
+  .safe-area-y {
+    padding-top: var(--spacing-safe-y);
+    padding-bottom: var(--spacing-safe-y);
+  }
+
+  .tap-target {
+    min-height: var(--tap-target);
+    min-width: var(--tap-target);
+  }
+
+  .card-item {
+    min-height: var(--card-item-height);
+  }
+
+  .nav-height {
+    height: var(--nav-height);
+  }
+
+  .app-bar-height {
+    height: var(--app-bar-height);
+  }
+}

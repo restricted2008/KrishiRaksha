@@ -1,0 +1,78 @@
+{
+  "common": {
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "search": "Search",
+    "filter": "Filter"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "phone": "Phone Number",
+    "name": "Name",
+    "role": "Role",
+    "loginTitle": "Login to KrishiRaksha",
+    "registerTitle": "Register for KrishiRaksha",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "signUp": "Sign Up",
+    "signIn": "Sign In"
+  },
+  "roles": {
+    "farmer": "Farmer",
+    "distributor": "Distributor",
+    "retailer": "Retailer",
+    "consumer": "Consumer",
+    "government": "Government"
+  },
+  "farmer": {
+    "dashboard": "Farmer Dashboard",
+    "addProduct": "Add Product",
+    "myProducts": "My Products",
+    "productName": "Product Name",
+    "batchNumber": "Batch Number",
+    "quantity": "Quantity",
+    "harvestDate": "Harvest Date",
+    "price": "Price"
+  },
+  "supplyChain": {
+    "update": "Update Supply Chain",
+    "history": "Supply Chain History",
+    "status": "Status",
+    "location": "Location",
+    "timestamp": "Timestamp"
+  },
+  "consumer": {
+    "verify": "Verify Product",
+    "scanQR": "Scan QR Code",
+    "productDetails": "Product Details",
+    "authenticity": "Authenticity Verified"
+  },
+  "government": {
+    "dashboard": "Government Dashboard",
+    "analytics": "Analytics",
+    "allProducts": "All Products",
+    "reports": "Reports"
+  },
+  "errors": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address",
+    "invalidPhone": "Invalid phone number",
+    "passwordMismatch": "Passwords do not match",
+    "networkError": "Network error. Please try again.",
+    "unknownError": "An error occurred. Please try again."
+  }
+}

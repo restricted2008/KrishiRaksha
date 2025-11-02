@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Krishiraksha</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #FAFAFA 0%, #E8F5E8 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .offline-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .icon-container {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: #E8F5E8;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon {
+      width: 40px;
+      height: 40px;
+      color: #2E7D32;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #212121;
+      margin-bottom: 12px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #616161;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 20px;
+      background: #FFF3E0;
+      border: 1px solid #F9A825;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #F9A825;
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    .status.online {
+      background: #E8F5E8;
+      border-color: #2E7D32;
+    }
+
+    .status.online .status-dot {
+      background: #2E7D32;
+    }
+
+    .retry-btn {
+      background: #2E7D32;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .retry-btn:hover {
+      background: #1B5E20;
+    }
+
+    .retry-btn:disabled {
+      background: #9E9E9E;
+      cursor: not-allowed;
+    }
+
+    .cache-info {
+      background: #F5F5F5;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 24px;
+    }
+
+    .cache-info h3 {
+      font-size: 14px;
+      color: #616161;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cache-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #E0E0E0;
+      font-size: 14px;
+    }
+
+    .cache-item:last-child {
+      border-bottom: none;
+    }
+
+    .cache-label {
+      color: #616161;
+    }
+
+    .cache-value {
+      color: #212121;
+      font-weight: 600;
+    }
+
+    .sync-status {
+      margin-top: 16px;
+      padding: 12px;
+      background: #E3F2FD;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #1976D2;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(0, 0, 0, 0.1);
+      border-top-color: #2E7D32;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="icon-container">
+      <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3"></path>
+      </svg>
+    </div>
+
+    <h1>You're Offline</h1>
+    <p>It looks like you've lost your internet connection. Don't worry, you can still view cached content and any forms you submit will be synced when you're back online.</p>
+
+    <div class="status" id="status">
+      <span class="status-dot"></span>
+      <span id="status-text">Checking connection...</span>
+    </div>
+
+    <button class="retry-btn" id="retry-btn" onclick="retryConnection()">
+      <span id="btn-text">Retry Connection</span>
+    </button>
+
+    <div class="cache-info">
+      <h3>Available Offline</h3>
+      <div class="cache-item">
+        <span class="cache-label">Cached Pages</span>
+        <span class="cache-value" id="cached-pages">Loading...</span>
+      </div>
+      <div class="cache-item">
+        <span class="cache-label">Cached Images</span>
+        <span class="cache-value" id="cached-images">Loading...</span>
+      </div>
+      <div class="cache-item">
+        <span class="cache-label">API Cache</span>
+        <span class="cache-value" id="cached-api">Loading...</span>
+      </div>
+    </div>
+
+    <div class="sync-status" id="sync-status" style="display: none;">
+      <div class="spinner"></div>
+      <span id="sync-text">Checking for pending data...</span>
+    </div>
+  </div>
+
+  <script>
+    let isOnline = navigator.onLine;
+
+    // Update online/offline status
+    function updateStatus() {
+      const status = document.getElementById('status');
+      const statusText = document.getElementById('status-text');
+      const retryBtn = document.getElementById('retry-btn');
+
+      if (navigator.onLine) {
+        status.classList.add('online');
+        statusText.textContent = 'Connection Restored!';
+        retryBtn.textContent = 'Return to App';
+        retryBtn.disabled = false;
+      } else {
+        status.classList.remove('online');
+        statusText.textContent = 'No Internet Connection';
+        retryBtn.textContent = 'Retry Connection';
+        retryBtn.disabled = false;
+      }
+    }
+
+    // Retry connection
+    function retryConnection() {
+      const retryBtn = document.getElementById('retry-btn');
+      const btnText = document.getElementById('btn-text');
+      
+      if (navigator.onLine) {
+        // Redirect to app
+        window.location.href = '/';
+      } else {
+        // Try to ping a known endpoint
+        btnText.innerHTML = '<span class="spinner"></span> Checking...';
+        retryBtn.disabled = true;
+
+        fetch('/', { method: 'HEAD', cache: 'no-store' })
+          .then(() => {
+            updateStatus();
+            setTimeout(() => {
+              window.location.href = '/';
+            }, 1000);
+          })
+          .catch(() => {
+            btnText.textContent = 'Still Offline';
+            setTimeout(() => {
+              btnText.textContent = 'Retry Connection';
+              retryBtn.disabled = false;
+            }, 2000);
+          });
+      }
+    }
+
+    // Get cache statistics
+    async function getCacheStats() {
+      if ('caches' in window) {
+        try {
+          const cacheNames = await caches.keys();
+          let pageCount = 0;
+          let imageCount = 0;
+          let apiCount = 0;
+
+          for (const cacheName of cacheNames) {
+            const cache = await caches.open(cacheName);
+            const requests = await cache.keys();
+            
+            for (const request of requests) {
+              const url = request.url;
+              if (url.includes('.html') || request.mode === 'navigate') {
+                pageCount++;
+              } else if (url.match(/\.(png|jpg|jpeg|svg|gif|webp)$/)) {
+                imageCount++;
+              } else if (url.includes('/api/')) {
+                apiCount++;
+              }
+            }
+          }
+
+          document.getElementById('cached-pages').textContent = pageCount || 'None';
+          document.getElementById('cached-images').textContent = imageCount || 'None';
+          document.getElementById('cached-api').textContent = apiCount || 'None';
+        } catch (error) {
+          console.error('Error getting cache stats:', error);
+          document.getElementById('cached-pages').textContent = 'Error';
+          document.getElementById('cached-images').textContent = 'Error';
+          document.getElementById('cached-api').textContent = 'Error';
+        }
+      }
+    }
+
+    // Check for pending sync data
+    async function checkPendingSync() {
+      const syncStatus = document.getElementById('sync-status');
+      const syncText = document.getElementById('sync-text');
+
+      try {
+        const db = await openDB();
+        const tx = db.transaction('pending-requests', 'readonly');
+        const store = tx.objectStore('pending-requests');
+        const count = await store.count();
+
+        if (count > 0) {
+          syncStatus.style.display = 'block';
+          syncText.textContent = `${count} form submission(s) will sync when online`;
+        }
+      } catch (error) {
+        console.log('No pending sync data');
+      }
+    }
+
+    // Open IndexedDB
+    function openDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open('krishiraksha-offline', 1);
+        request.onerror = () => reject(request.error);
+        request.onsuccess = () => resolve(request.result);
+      });
+    }
+
+    // Event listeners
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
+
+    // Initialize
+    updateStatus();
+    getCacheStats();
+    checkPendingSync();
+  </script>
+</body>
+</html>
